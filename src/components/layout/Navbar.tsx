@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Heart, User, ShoppingBag, Menu, X, Phone, Mail } from 'lucide-react';
+import { Search, Heart, User, ShoppingBag, Menu, X, Phone, Mail, Sparkles, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { SearchOverlay } from './SearchOverlay';
+import { MobileBottomNav } from './MobileBottomNav';
 
 function InstagramIcon({ size = 17 }: { size?: number }) {
   return (
@@ -85,7 +86,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
 
       {/* Announcement Bar */}
       <div
-        className={`fixed top-0 left-0 w-full z-50 bg-mocha text-ivory text-[11px] tracking-widest uppercase py-2 text-center font-body font-medium transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-full z-50 bg-mocha text-ivory text-[9px] sm:text-[11px] tracking-[0.16em] sm:tracking-widest uppercase py-1.5 sm:py-2 px-3 text-center font-body font-medium transition-transform duration-300 truncate ${
           scrolled ? '-translate-y-full' : 'translate-y-0'
         }`}
         role="banner"
@@ -96,19 +97,19 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
       {/* Main Navbar */}
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out ${navbarBg} ${
-          scrolled ? 'translate-y-0 py-2.5' : 'translate-y-[32px] py-4'
+          scrolled ? 'translate-y-0 py-2 sm:py-2.5' : 'translate-y-[26px] sm:translate-y-[32px] py-2.5 sm:py-4'
         }`}
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-12">
           {/* Top Row: Icons + Logo + Actions */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             {/* Left: Hamburger (mobile) */}
-            <div className="flex items-center gap-1 w-[120px] lg:w-[220px]">
+            <div className="flex items-center gap-1 w-auto min-w-[36px] lg:w-[220px]">
               <button
                 onClick={() => setDrawerOpen(true)}
-                className={`lg:hidden p-2 -ml-2 ${iconColor} transition-colors duration-200`}
+                className={`lg:hidden p-1.5 -ml-1 ${iconColor} transition-colors duration-200 cursor-pointer`}
                 aria-label="Open menu"
                 aria-expanded={drawerOpen}
               >
@@ -125,42 +126,42 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
             {/* Center: Brand Logo */}
             <Link
               to="/"
-              className="flex flex-col items-center shrink-0 group py-1"
+              className="flex flex-col items-center shrink-0 group py-0.5 max-w-[210px] sm:max-w-none text-center"
               aria-label="The Heritage Edit — Home"
             >
               <span
-                className={`font-heading text-2xl sm:text-3xl tracking-[0.22em] ${textColor} transition-colors duration-300 leading-none text-center font-normal`}
+                className={`font-heading text-lg sm:text-2xl lg:text-3xl tracking-[0.18em] sm:tracking-[0.22em] ${textColor} transition-colors duration-300 leading-none text-center font-normal`}
               >
                 THE HERITAGE EDIT
               </span>
               <span
-                className={`text-[9px] sm:text-[10px] tracking-[0.25em] ${subtitleColor} font-body font-medium mt-1.5 transition-colors duration-300 uppercase`}
+                className={`text-[8px] sm:text-[9.5px] tracking-[0.18em] sm:tracking-[0.25em] ${subtitleColor} font-body font-medium mt-1 transition-colors duration-300 uppercase truncate max-w-[200px] sm:max-w-none`}
               >
-                Contemporary Pakistani Luxury · Unstitched
+                Contemporary Pakistani Luxury
               </span>
             </Link>
 
             {/* Right: Action Icons */}
-            <div className="flex items-center justify-end gap-1 sm:gap-2 w-[120px] lg:w-[220px]">
+            <div className="flex items-center justify-end gap-0.5 sm:gap-2 w-auto min-w-[36px] lg:w-[220px]">
               {/* Search */}
               <button
                 onClick={() => setSearchOpen(true)}
-                className={`p-2 ${iconColor} transition-colors duration-200`}
+                className={`p-1.5 sm:p-2 ${iconColor} transition-colors duration-200 cursor-pointer`}
                 aria-label="Search collections"
               >
-                <Search size={20} strokeWidth={1.5} />
+                <Search size={19} strokeWidth={1.5} />
               </button>
 
               {/* Wishlist */}
               <Link
                 to="/wishlist"
-                className={`relative p-2 ${iconColor} transition-colors duration-200`}
+                className={`relative p-1.5 sm:p-2 ${iconColor} transition-colors duration-200`}
                 aria-label={`Wishlist${wishlistCount > 0 ? `, ${wishlistCount} items` : ''}`}
               >
-                <Heart size={20} strokeWidth={1.5} />
+                <Heart size={19} strokeWidth={1.5} />
                 {wishlistCount > 0 && (
                   <span
-                    className={`absolute top-0.5 right-0.5 min-w-[17px] h-[17px] flex items-center justify-center rounded-full text-[10px] font-body font-semibold leading-none px-1 ${badgeBg} transition-colors duration-300`}
+                    className={`absolute top-0.5 right-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[9px] font-body font-semibold leading-none px-1 ${badgeBg} transition-colors duration-300`}
                   >
                     {wishlistCount}
                   </span>
@@ -173,19 +174,19 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                 className={`hidden sm:flex p-2 ${iconColor} transition-colors duration-200`}
                 aria-label="Customer Account"
               >
-                <User size={20} strokeWidth={1.5} />
+                <User size={19} strokeWidth={1.5} />
               </Link>
 
               {/* Cart Drawer Trigger */}
               <button
                 onClick={() => setIsCartOpen(true)}
-                className={`relative p-2 ${iconColor} transition-colors duration-200`}
+                className={`relative p-1.5 sm:p-2 ${iconColor} transition-colors duration-200 cursor-pointer`}
                 aria-label={`Shopping bag${cartCount > 0 ? `, ${cartCount} items` : ''}`}
               >
-                <ShoppingBag size={20} strokeWidth={1.5} />
+                <ShoppingBag size={19} strokeWidth={1.5} />
                 {cartCount > 0 && (
                   <span
-                    className={`absolute top-0.5 right-0.5 min-w-[17px] h-[17px] flex items-center justify-center rounded-full text-[10px] font-body font-semibold leading-none px-1 ${badgeBg} transition-colors duration-300`}
+                    className={`absolute top-0.5 right-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[9px] font-body font-semibold leading-none px-1 ${badgeBg} transition-colors duration-300`}
                   >
                     {cartCount}
                   </span>
@@ -354,6 +355,9 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
           </>
         )}
       </AnimatePresence>
+
+      {/* Interactive Mobile Bottom Navigation */}
+      <MobileBottomNav onOpenSearch={() => setSearchOpen(true)} />
     </>
   );
 }

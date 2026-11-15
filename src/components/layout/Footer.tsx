@@ -94,7 +94,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-[#292321] text-[#E8DED0] px-6 md:px-12 lg:px-16 py-16 md:py-20">
+    <footer className="bg-[#292321] text-[#E8DED0] px-6 md:px-12 lg:px-16 pt-16 pb-24 sm:py-20">
       {/* ── Main Grid ── */}
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand Column */}

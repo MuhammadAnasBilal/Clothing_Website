@@ -23,7 +23,7 @@ export function HomePage() {
   const featuredReviews = reviews.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-ivory">
+    <div className="min-h-screen bg-ivory pb-16 lg:pb-0">
       {/* HERO SECTION */}
       <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-charcoal text-ivory">
         {/* Background Image with subtle zoom and editorial tint */}
@@ -38,15 +38,15 @@ export function HomePage() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 sm:py-32 flex flex-col items-center text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-32 flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-champagne/15 backdrop-blur-md border border-champagne/25 text-champagne mb-8"
+            className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-champagne/15 backdrop-blur-md border border-champagne/25 text-champagne mb-6 sm:mb-8"
           >
-            <Sparkles size={14} className="text-champagne" />
-            <span className="text-[11px] tracking-[0.25em] uppercase font-body font-medium">
+            <Sparkles size={13} className="text-champagne shrink-0" />
+            <span className="text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.25em] uppercase font-body font-medium truncate">
               The Heritage Edit · Unstitched Luxury '24
             </span>
           </motion.div>
@@ -55,7 +55,7 @@ export function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="font-heading text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[9rem] tracking-tight leading-[0.92] max-w-6xl font-normal"
+            className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-[7.5rem] xl:text-[8.5rem] tracking-tight leading-[0.98] sm:leading-[0.92] max-w-6xl font-normal"
           >
             Heirloom Artistry, <br />
             <span className="italic font-light text-champagne">Woven Without Bounds</span>
@@ -233,8 +233,8 @@ export function HomePage() {
               </h2>
             </div>
 
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap gap-2">
+            {/* Category Filter Pills — Smooth Horizontal Swipe on Mobile */}
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 -mx-2 px-2 sm:mx-0 sm:px-0">
               {[
                 { id: 'all', label: 'All Curations' },
                 { id: 'lawn', label: 'Summer Lawn' },
@@ -244,7 +244,7 @@ export function HomePage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2 text-xs uppercase tracking-[0.14em] font-body font-medium rounded-full transition-all duration-200 ${
+                  className={`px-3.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs uppercase tracking-[0.14em] font-body font-medium rounded-full transition-all duration-200 shrink-0 cursor-pointer ${
                     activeTab === tab.id
                       ? 'bg-charcoal text-ivory shadow-xs'
                       : 'bg-champagne/40 text-charcoal hover:bg-champagne'

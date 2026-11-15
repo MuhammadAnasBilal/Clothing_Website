@@ -599,6 +599,38 @@ export function ProductPage() {
           </div>
         )}
       </div>
+
+      {/* Sticky Mobile Add to Bag Bar */}
+      <div className="lg:hidden fixed bottom-[max(3.3rem,env(safe-area-inset-bottom))] left-0 right-0 z-30 bg-ivory/95 backdrop-blur-md border-t border-border/80 px-4 py-2.5 shadow-lg flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <img
+            src={currentColor?.image || product.mainImage}
+            alt=""
+            className="w-10 h-12 object-cover rounded-xs border border-border shrink-0"
+          />
+          <div className="min-w-0">
+            <h4 className="text-xs font-body font-medium text-charcoal truncate">
+              {product.name}
+            </h4>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-xs font-semibold text-mocha font-body">
+                {formatPrice(product.price)}
+              </span>
+              <span className="text-[10px] text-warm-grey uppercase tracking-wider font-body truncate">
+                · {currentColor?.name}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className="bg-mocha hover:bg-charcoal text-ivory text-[10px] uppercase tracking-[0.16em] font-semibold py-2.5 px-4 rounded-xs shrink-0 shadow-sm active:scale-95 transition-all cursor-pointer"
+        >
+          Add To Bag
+        </button>
+      </div>
     </div>
   );
 }

@@ -99,7 +99,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 sm:p-6 md:p-10 lg:p-12 overflow-y-auto">
+        <div className="fixed inset-0 z-[90] flex items-end sm:items-center justify-center p-0 sm:p-6 md:p-10 lg:p-12 overflow-y-auto">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -111,24 +111,27 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
             aria-hidden="true"
           />
 
-          {/* Modal Card */}
+          {/* Modal Card — Native bottom-sheet on mobile, centered modal on desktop */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 16 }}
+            initial={{ opacity: 0, scale: 0.96, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 16 }}
+            exit={{ opacity: 0, scale: 0.96, y: 30 }}
             transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-            className="relative w-full max-w-5xl max-h-[90vh] bg-card rounded-md shadow-2xl border border-border overflow-hidden flex flex-col z-10"
+            className="relative w-full sm:max-w-5xl max-h-[92vh] sm:max-h-[90vh] bg-card rounded-t-2xl sm:rounded-md shadow-2xl border-t sm:border border-border overflow-hidden flex flex-col z-10"
             role="dialog"
             aria-modal="true"
             aria-label={`${product.name} Quick View`}
           >
+            {/* Mobile Drag Handle */}
+            <div className="sm:hidden w-12 h-1 bg-border/80 rounded-full mx-auto my-2.5 shrink-0" />
+
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-ivory/80 backdrop-blur-xs border border-border/80 flex items-center justify-center text-charcoal hover:bg-ivory hover:text-burgundy transition-colors"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-ivory/80 backdrop-blur-xs border border-border/80 flex items-center justify-center text-charcoal hover:bg-ivory hover:text-burgundy transition-colors cursor-pointer"
               aria-label="Close modal"
             >
-              <X size={18} strokeWidth={1.5} />
+              <X size={17} strokeWidth={1.5} />
             </button>
 
             <div className="flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 min-h-0">

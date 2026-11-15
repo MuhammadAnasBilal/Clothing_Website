@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Eye } from 'lucide-react';
+import { Heart, Eye, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Product } from '../../types';
 import { useWishlist } from '../../context/WishlistContext';
@@ -15,6 +15,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
   const [selectedColorIdx, setSelectedColorIdx] = useState(
     product.selectedColorIndex ?? 0
   );
+  const [showModelMobile, setShowModelMobile] = useState(false);
   const { isInWishlist, toggleItem } = useWishlist();
   const wishlisted = isInWishlist(product.id);
 
@@ -44,22 +45,28 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
           <img
             src={mainImg}
             alt={`${product.name} — ${currentColor?.name || 'Fabric'}`}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-600 ease-in-out group-hover:scale-102 transition-transform"
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-600 ease-in-out group-hover:scale-102 ${
+              showModelMobile && modelImg ? 'opacity-0' : 'opacity-100'
+            }`}
             loading="lazy"
           />
 
-          {/* Secondary image (Stitched model interpretation on hover) */}
+          {/* Secondary image (Stitched model interpretation on hover or mobile tap) */}
           {modelImg && (
             <img
               src={modelImg}
               alt={`${product.name} — Stitched interpretation on model`}
-              className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-600 ease-in-out"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-600 ease-in-out ${
+                showModelMobile
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100'
+              }`}
               loading="lazy"
             />
           )}
 
           {/* Stitched Inspiration Badge on hover */}
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+          <div className="hidden sm:block absolute top-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
             <span className="bg-charcoal/80 text-ivory text-[9px] uppercase tracking-[0.16em] px-2.5 py-0.5 rounded-xs backdrop-blur-xs whitespace-nowrap">
               Stitched Inspiration
             </span>
@@ -67,19 +74,19 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
         </Link>
 
         {/* Status Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
+        <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
           {product.isNewArrival && (
-            <span className="bg-mocha text-ivory text-[10px] tracking-[0.14em] uppercase px-2.5 py-1 font-body font-medium shadow-xs">
+            <span className="bg-mocha text-ivory text-[9px] sm:text-[10px] tracking-[0.14em] uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 font-body font-medium shadow-xs">
               New
             </span>
           )}
           {product.isBestseller && (
-            <span className="bg-burgundy text-ivory text-[10px] tracking-[0.14em] uppercase px-2.5 py-1 font-body font-medium shadow-xs">
+            <span className="bg-burgundy text-ivory text-[9px] sm:text-[10px] tracking-[0.14em] uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 font-body font-medium shadow-xs">
               Bestseller
             </span>
           )}
           {hasDiscount && (
-            <span className="bg-burgundy text-ivory text-[10px] tracking-[0.14em] uppercase px-2.5 py-1 font-body font-medium shadow-xs">
+            <span className="bg-burgundy text-ivory text-[9px] sm:text-[10px] tracking-[0.14em] uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 font-body font-medium shadow-xs">
               -{product.discount}%
             </span>
           )}
@@ -88,7 +95,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
         {/* Wishlist Heart Button */}
         <motion.button
           whileTap={{ scale: 0.85 }}
-          className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-ivory/85 backdrop-blur-xs flex items-center justify-center shadow-xs transition-colors hover:bg-ivory"
+          className="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-ivory/85 backdrop-blur-xs flex items-center justify-center shadow-xs transition-colors hover:bg-ivory cursor-pointer"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -97,7 +104,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
           aria-label={wishlisted ? 'Remove from wishlist' : 'Save to wishlist'}
         >
           <Heart
-            size={16}
+            size={15}
             className={
               wishlisted
                 ? 'fill-burgundy text-burgundy transition-colors'
@@ -106,11 +113,44 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
           />
         </motion.button>
 
-        {/* Quick View Button on Hover */}
+        {/* Mobile View Toggle Pill (Fabric vs Tailored Silhouette) */}
+        {modelImg && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowModelMobile(!showModelMobile);
+            }}
+            className="sm:hidden absolute bottom-2 left-2 z-20 bg-charcoal/80 text-ivory text-[8px] uppercase tracking-[0.12em] px-2 py-0.5 rounded-xs backdrop-blur-xs flex items-center gap-1 active:scale-95 cursor-pointer shadow-xs"
+            aria-label="Toggle stitched interpretation"
+          >
+            <Sparkles size={10} className="text-champagne" />
+            <span>{showModelMobile ? 'Fabric' : 'Tailored'}</span>
+          </button>
+        )}
+
+        {/* Mobile Quick View Trigger Icon */}
         {onQuickView && (
           <button
             type="button"
-            className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 bg-ivory/95 hover:bg-ivory backdrop-blur-sm text-center py-2.5 text-[11px] tracking-[0.16em] uppercase text-mocha font-body font-medium z-20 rounded-xs shadow-md flex items-center justify-center gap-1.5"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onQuickView(product);
+            }}
+            className="sm:hidden absolute bottom-2 right-2 z-20 w-7 h-7 rounded-full bg-ivory/90 backdrop-blur-xs flex items-center justify-center text-charcoal shadow-sm active:scale-90 cursor-pointer"
+            aria-label={`Quick view ${product.name}`}
+          >
+            <Eye size={13} strokeWidth={1.5} />
+          </button>
+        )}
+
+        {/* Desktop Quick View Button on Hover */}
+        {onQuickView && (
+          <button
+            type="button"
+            className="hidden sm:flex absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 bg-ivory/95 hover:bg-ivory backdrop-blur-sm text-center py-2.5 text-[11px] tracking-[0.16em] uppercase text-mocha font-body font-medium z-20 rounded-xs shadow-md items-center justify-center gap-1.5 cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -124,33 +164,33 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
       </div>
 
       {/* Product Details Below Image */}
-      <div className="pt-3.5 flex flex-col flex-1 justify-between">
+      <div className="pt-3 flex flex-col flex-1 justify-between">
         <div>
           <div className="flex items-baseline justify-between gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-warm-grey font-body">
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-warm-grey font-body">
               {product.fabricType} · {product.pieces}-Piece
             </span>
             {product.rating && (
-              <span className="text-[11px] text-warm-grey font-body">
+              <span className="text-[10px] sm:text-[11px] text-warm-grey font-body">
                 ★ {product.rating.toFixed(1)}
               </span>
             )}
           </div>
 
           <Link to={`/product/${product.slug}`} className="block mt-1 group-hover:text-mocha transition-colors">
-            <h3 className="text-sm font-medium text-charcoal font-body line-clamp-1 leading-snug">
+            <h3 className="text-xs sm:text-sm font-medium text-charcoal font-body line-clamp-1 leading-snug">
               {product.name}
             </h3>
           </Link>
         </div>
 
-        <div className="mt-2 pt-1 border-t border-border/40 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            <span className="text-sm font-semibold text-mocha font-body">
+        <div className="mt-2 pt-1 border-t border-border/40 flex items-center justify-between gap-1">
+          <div className="flex items-baseline gap-1.5 sm:gap-2">
+            <span className="text-xs sm:text-sm font-semibold text-mocha font-body">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (
-              <span className="text-xs text-warm-grey/80 line-through font-body">
+              <span className="text-[10px] sm:text-xs text-warm-grey/80 line-through font-body">
                 {formatPrice(product.originalPrice)}
               </span>
             )}
@@ -158,7 +198,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
 
           {/* Color Swatches */}
           {product.colors.length > 1 && (
-            <div className="flex items-center gap-1.5" aria-label="Available colors">
+            <div className="flex items-center gap-1 sm:gap-1.5" aria-label="Available colors">
               {visibleSwatches.map((color, idx) => (
                 <button
                   key={color.name}
@@ -168,7 +208,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
                     e.stopPropagation();
                     setSelectedColorIdx(idx);
                   }}
-                  className={`w-3.5 h-3.5 rounded-full border border-black/10 transition-all ${
+                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border border-black/10 transition-all cursor-pointer ${
                     idx === selectedColorIdx
                       ? 'ring-1.5 ring-offset-1 ring-mocha scale-110'
                       : 'hover:scale-105 opacity-80 hover:opacity-100'
@@ -179,7 +219,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
                 />
               ))}
               {extraCount > 0 && (
-                <span className="text-[10px] text-warm-grey font-body">
+                <span className="text-[9px] sm:text-[10px] text-warm-grey font-body">
                   +{extraCount}
                 </span>
               )}
